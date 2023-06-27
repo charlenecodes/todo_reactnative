@@ -46,10 +46,18 @@ export default function App() {
               <Text>Click on task to strikethrough</Text>
             </View>
           ) : null}
-
+          {/* the map function gives us access to the index and by passing this to the child component, it is able to access it and use it for the strikethrough and removeTask functions */}
+          {/* text is a variable that we chose and {item} is what is being iterated through the map function */}
           <View style={styles.items}>
             {taskList.map((item, index) => {
-              return <Task removeTask={removeTask} key={index} text={item} />;
+              return (
+                <Task
+                  removeTask={() => removeTask(index)}
+                  key={index}
+                  index={index}
+                  text={item}
+                />
+              );
             })}
           </View>
         </View>

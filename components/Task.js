@@ -3,10 +3,10 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import React, { useState } from "react";
 
 // instead of passing props, I destructured the props by passing them inside curly brackets to decrease repetition (no need for props.text, props.removeTask)
-export default function Task({ text, removeTask }) {
+export default function Task({ text, removeTask, index }) {
   const [toggled, setIsToggled] = useState(true);
 
-  const strikethrough = () => {
+  const strikethrough = (index) => {
     setIsToggled(!toggled);
   };
 
@@ -14,11 +14,14 @@ export default function Task({ text, removeTask }) {
     <View style={styles.item}>
       <View style={styles.itemLeft}>
         {toggled ? (
-          <Text onPress={strikethrough} style={styles.itemText}>
+          <Text onPress={() => strikethrough(index)} style={styles.itemText}>
             {text}
           </Text>
         ) : (
-          <Text onPress={strikethrough} style={styles.strikethrough}>
+          <Text
+            onPress={() => strikethrough(index)}
+            style={styles.strikethrough}
+          >
             {text}
           </Text>
         )}
@@ -46,18 +49,14 @@ const styles = StyleSheet.create({
   },
   itemLeft: {
     alignItems: "center",
-    flexWrap: "nowrap",
+    flexWrap: "wrap",
     marginRight: 15,
   },
   itemText: {
-    fontSize: 18,
     color: "black",
-    maxWidth: "80%",
   },
   strikethrough: {
-    fontSize: 18,
     color: "black",
-    maxWidth: "80%",
     textDecorationLine: "line-through",
     textDecorationStyle: "solid",
   },
