@@ -1,14 +1,33 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import React, { useState } from "react";
 
-export default function Task(props) {
+// instead of passing props, I destructured the props by passing them inside curly brackets to decrease repetition (no need for props.text, props.removeTask)
+export default function Task({ text, removeTask }) {
+  const [toggled, setIsToggled] = useState(true);
+
+  const strikethrough = () => {
+    setIsToggled(!toggled);
+  };
+
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
-        <View style={styles.square}></View>
-        <Text style={styles.itemText}>{props.text}</Text>
+        {toggled ? (
+          <Text onPress={strikethrough} style={styles.itemText}>
+            {text}
+          </Text>
+        ) : (
+          <Text onPress={strikethrough} style={styles.strikethrough}>
+            {text}
+          </Text>
+        )}
       </View>
-      <View style={styles.circular}></View>
+      <Pressable>
+        <View style={styles.remove}>
+          <Text onPress={removeTask}>❌</Text>
+        </View>
+      </Pressable>
       <StatusBar style="auto" />
     </View>
   );
@@ -26,28 +45,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   itemLeft: {
-    flexDirection: "row",
     alignItems: "center",
-    flexWrap: "wrap",
-  },
-  square: {
-    width: 24,
-    height: 24,
-    backgroundColor: "#55bcf6",
-    opacity: 0.4,
-    borderRadius: 5,
+    flexWrap: "nowrap",
     marginRight: 15,
   },
   itemText: {
-    fontSize: 24,
+    fontSize: 18,
     color: "black",
     maxWidth: "80%",
   },
-  circular: {
-    width: 12,
-    height: 12,
-    borderColor: "#55bcf6",
-    borderWidth: 2,
-    borderRadius: 5,
+  strikethrough: {
+    fontSize: 18,
+    color: "black",
+    maxWidth: "80%",
+    textDecorationLine: "line-through",
+    textDecorationStyle: "solid",
   },
 });
